@@ -3,7 +3,7 @@ from random import randint
 import pygame as pg
 
 FLLSCRN = False         # True for Fullscreen, or False for Window
-BOIDZ = 150              # How many boids to spawn, may slow after 200ish
+BOIDZ = 180              # How many boids to spawn, may slow after 200ish
 WRAP = False            # False avoids edges, True wraps boids to other side
 FISH = False            # True will turn boids into fish
 BGCOLOR = (0, 0, 0)     # Background color in RGB
@@ -105,9 +105,9 @@ class Boid(pg.sprite.Sprite):
 
 def main():
     pg.init()  # prepare window
-    pg.display.set_caption("PyNBoids")
-    try: pg.display.set_icon(pg.image.load("nboids.png"))
-    except: print("FYI: nboids.png icon not found, skipping..")
+    pg.display.set_caption("PyBoids")
+    try: pg.display.set_icon(pg.image.load("boids.png"))
+    except: print("FYI: boids.png icon not found, skipping..")
     # setup fullscreen or window mode
     if FLLSCRN:  #screen = pg.display.set_mode((0,0), pg.FULLSCREEN)
         currentRez = (pg.display.Info().current_w, pg.display.Info().current_h)
