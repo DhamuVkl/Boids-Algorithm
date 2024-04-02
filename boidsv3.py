@@ -35,7 +35,7 @@ class Boid(pg.sprite.Sprite):
         self.rect = self.image.get_rect(center=(randint(50, dS_w - 50), randint(50, dS_h - 50)))
         self.angle = randint(0, 360)  # random start angle, and position ^
         self.pos = pg.Vector2(self.rect.center)
-        self.followMouse = True  # Initially follow mouse cursor
+        self.followMouse = False  # Initially not following the mouse
 
     def update(self, allBoids, dt, ejWrap=False):  # behavior
         selfCenter = pg.Vector2(self.rect.center)
@@ -69,19 +69,12 @@ class Boid(pg.sprite.Sprite):
             if abs(tAngle - self.angle) > .8: turnDir = (angleDiff / 360 - (angleDiff // 360)) * 360 - 180
             # if boid gets too close to target, steer away
             if tDistance < self.pSpace and targetV == nearestBoid : turnDir = -turnDir
-        # Follow mouse cursor
+        # Follow mouse cursor if followMouse is True
         if self.followMouse:
             mouse_pos = pg.mouse.get_pos()
-            if 0 <= mouse_pos[0] <= curW and 0 <= mouse_pos[1] <= curH:  # Check if mouse is inside window
-                angle_to_mouse = degrees(atan2(mouse_pos[1] - selfCenter[1], mouse_pos[0] - selfCenter[0]))
-                angle_diff = (angle_to_mouse - self.angle) + 180
-                if abs(angle_to_mouse - self.angle) > .8: turnDir = (angle_diff / 360 - (angle_diff // 360)) * 360 - 180
-            else:
-                self.followMouse = False  # If mouse is outside window, stop following
-        else:
-            mouse_pos = pg.mouse.get_pos()
-            if 0 <= mouse_pos[0] <= curW and 0 <= mouse_pos[1] <= curH:  # Check if mouse is inside window
-                self.followMouse = True  # If mouse is back inside window, start following
+            angle_to_mouse = degrees(atan2(mouse_pos[1] - selfCenter[1], mouse_pos[0] - selfCenter[0]))
+            angle_diff = (angle_to_mouse - self.angle) + 180
+            if abs(angle_to_mouse - self.angle) > .8: turnDir = (angle_diff / 360 - (angle_diff // 360)) * 360 - 180
         # Avoid edges of screen by turning toward the edge normal-angle
         if not ejWrap and min(self.pos.x, self.pos.y, curW - self.pos.x, curH - self.pos.y) < margin:
             if self.pos.x < margin : tAngle = 0
@@ -126,11 +119,17 @@ def main():
         nBoids.add(Boid(screen, FISH))
     allBoids = nBoids.sprites()
     clock = pg.time.Clock()
+    follow_mouse = False  # Initially not following mouse
     # main loop
     while True:
         for e in pg.event.get():
             if e.type == pg.QUIT or e.type == pg.KEYDOWN and e.key == pg.K_ESCAPE:
                 return
+            elif e.type == pg.MOUSEBUTTONDOWN and e.button == 1:
+                # Toggle followMouse behavior when left mouse button is clicked
+                follow_mouse = not follow_mouse
+                for boid in allBoids:
+                    boid.followMouse = follow_mouse
 
         dt = clock.tick(FPS) / 1000
         screen.fill(BGCOLOR)
