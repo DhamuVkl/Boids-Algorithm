@@ -4,10 +4,10 @@ import random
 
 # Constants
 WIDTH, HEIGHT = 1000, 600
-NUM_BOIDS = 800
+NUM_BOIDS = 200
 MAX_SPEED = 3
 BOID_RADIUS = 5
-BOID_COLOR = (0, 255, 0)
+BOID_COLOR = (0, 255, 100)
 WINDOW_COLOR = (0, 0, 0)
 BOID_SEP_DIST = 50
 BOID_ALIGN_DIST = 100
@@ -30,26 +30,33 @@ class Boid:
         self.velocity = self.velocity.normalize() * MAX_SPEED
 
         # Update position
+        new_position = self.position + self.velocity
+
+        # Avoid screen borders
+        avoid_border_dist = 50
+        if new_position.x < avoid_border_dist:
+            self.velocity.x += 1.0
+        elif new_position.x > WIDTH - avoid_border_dist:
+            self.velocity.x -= 1.0
+
+        if new_position.y < avoid_border_dist:
+            self.velocity.y += 1.0
+        elif new_position.y > HEIGHT - avoid_border_dist:
+            self.velocity.y -= 1.0
+
         self.position += self.velocity
 
-        # Wrap around screen boundaries
-        if self.position.x < 0:
-            self.position.x = WIDTH
-        elif self.position.x > WIDTH:
-            self.position.x = 0
-
-        if self.position.y < 0:
-            self.position.y = HEIGHT
-        elif self.position.y > HEIGHT:
-            self.position.y = 0
 
     def calculate_separation(self, flock):
         steer = pygame.math.Vector2(0, 0)
         count = 0
 
+        # Minimum distance to maintain between Boids
+        min_distance = 50
+
         for boid in flock:
             dist = self.position.distance_to(boid.position)
-            if dist > 0 and dist < BOID_SEP_DIST:
+            if dist > 0 and dist < min_distance:
                 diff = self.position - boid.position
                 diff = diff.normalize() / dist
                 steer += diff
@@ -65,6 +72,7 @@ class Boid:
             steer = steer.normalize()
 
         return steer
+
 
     def calculate_alignment(self, flock):
         steer = pygame.math.Vector2(0, 0)
