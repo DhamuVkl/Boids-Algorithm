@@ -54,8 +54,9 @@ class Boid:
         return steer
 
     def calculate_alignment(self, flock):
-        steer = pygame.math.Vector2(0, 0)  # Initialize with default value
+        steer = pygame.math.Vector2(0, 0)
         count = 0
+        avg_velocity = pygame.math.Vector2(0, 0)  # Initialize avg_velocity
 
         for boid in flock:
             dist = self.position.distance_to(boid.position)
@@ -70,6 +71,7 @@ class Boid:
             steer = steer.normalize()
 
         return steer
+
 
 
     def calculate_cohesion(self, flock):
