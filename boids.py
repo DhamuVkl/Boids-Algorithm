@@ -75,8 +75,9 @@ class Boid:
 
 
     def calculate_cohesion(self, flock):
-        avg_position = pygame.math.Vector2(0, 0)
+        steer = pygame.math.Vector2(0, 0)  # Initialize with default value
         count = 0
+        avg_position = pygame.math.Vector2(0, 0)  # Initialize avg_position
 
         for boid in flock:
             dist = self.position.distance_to(boid.position)
@@ -92,6 +93,7 @@ class Boid:
             steer = steer.normalize()
 
         return steer
+
 
     def draw(self, screen):
         pygame.draw.circle(screen, BOID_COLOR, (int(self.position.x), int(self.position.y)), BOID_RADIUS)
