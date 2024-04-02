@@ -9,7 +9,7 @@ FISH = False            # True will turn boids into fish
 BGCOLOR = (0, 0, 0)     # Background color in RGB
 WIDTH = 1200            # default 1200
 HEIGHT = 800            # default 800
-FPS = 48                # 48-90
+FPS = 60                # 48-90
 
 class Boid(pg.sprite.Sprite):
     def __init__(self, drawSurf, isFish=False, cHSV=None):
