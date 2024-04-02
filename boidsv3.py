@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from math import sin, cos, atan2, radians, degrees
 from random import randint
 import pygame as pg
@@ -79,6 +78,10 @@ class Boid(pg.sprite.Sprite):
                 if abs(angle_to_mouse - self.angle) > .8: turnDir = (angle_diff / 360 - (angle_diff // 360)) * 360 - 180
             else:
                 self.followMouse = False  # If mouse is outside window, stop following
+        else:
+            mouse_pos = pg.mouse.get_pos()
+            if 0 <= mouse_pos[0] <= curW and 0 <= mouse_pos[1] <= curH:  # Check if mouse is inside window
+                self.followMouse = True  # If mouse is back inside window, start following
         # Avoid edges of screen by turning toward the edge normal-angle
         if not ejWrap and min(self.pos.x, self.pos.y, curW - self.pos.x, curH - self.pos.y) < margin:
             if self.pos.x < margin : tAngle = 0
