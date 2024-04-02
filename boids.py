@@ -21,14 +21,27 @@ class Boid:
         self.position = pygame.math.Vector2(x, y)
         self.velocity = pygame.math.Vector2(random.uniform(-1, 1), random.uniform(-1, 1)).normalize() * MAX_SPEED
 
-    def update(self, flock):
-        separation = self.calculate_separation(flock)
-        alignment = self.calculate_alignment(flock)
-        cohesion = self.calculate_cohesion(flock)
+def update(self, flock):
+    separation = self.calculate_separation(flock)
+    alignment = self.calculate_alignment(flock)
+    cohesion = self.calculate_cohesion(flock)
 
-        self.velocity += separation * SEP_WEIGHT + alignment * ALIGN_WEIGHT + cohesion * COHESION_WEIGHT
-        self.velocity = self.velocity.normalize() * MAX_SPEED
-        self.position += self.velocity
+    self.velocity += separation * SEP_WEIGHT + alignment * ALIGN_WEIGHT + cohesion * COHESION_WEIGHT
+    self.velocity = self.velocity.normalize() * MAX_SPEED
+
+    # Update position
+    self.position += self.velocity
+
+    # Wrap around screen boundaries
+    if self.position.x < 0:
+        self.position.x = WIDTH
+    elif self.position.x > WIDTH:
+        self.position.x = 0
+
+    if self.position.y < 0:
+        self.position.y = HEIGHT
+    elif self.position.y > HEIGHT:
+        self.position.y = 0
 
     def calculate_separation(self, flock):
         steer = pygame.math.Vector2(0, 0)
