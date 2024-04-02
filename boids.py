@@ -21,27 +21,27 @@ class Boid:
         self.position = pygame.math.Vector2(x, y)
         self.velocity = pygame.math.Vector2(random.uniform(-1, 1), random.uniform(-1, 1)).normalize() * MAX_SPEED
 
-def update(self, flock):
-    separation = self.calculate_separation(flock)
-    alignment = self.calculate_alignment(flock)
-    cohesion = self.calculate_cohesion(flock)
+    def update(self, flock):
+        separation = self.calculate_separation(flock)
+        alignment = self.calculate_alignment(flock)
+        cohesion = self.calculate_cohesion(flock)
 
-    self.velocity += separation * SEP_WEIGHT + alignment * ALIGN_WEIGHT + cohesion * COHESION_WEIGHT
-    self.velocity = self.velocity.normalize() * MAX_SPEED
+        self.velocity += separation * SEP_WEIGHT + alignment * ALIGN_WEIGHT + cohesion * COHESION_WEIGHT
+        self.velocity = self.velocity.normalize() * MAX_SPEED
 
-    # Update position
-    self.position += self.velocity
+        # Update position
+        self.position += self.velocity
 
-    # Wrap around screen boundaries
-    if self.position.x < 0:
-        self.position.x = WIDTH
-    elif self.position.x > WIDTH:
-        self.position.x = 0
+        # Wrap around screen boundaries
+        if self.position.x < 0:
+            self.position.x = WIDTH
+        elif self.position.x > WIDTH:
+            self.position.x = 0
 
-    if self.position.y < 0:
-        self.position.y = HEIGHT
-    elif self.position.y > HEIGHT:
-        self.position.y = 0
+        if self.position.y < 0:
+            self.position.y = HEIGHT
+        elif self.position.y > HEIGHT:
+            self.position.y = 0
 
     def calculate_separation(self, flock):
         steer = pygame.math.Vector2(0, 0)
@@ -69,7 +69,7 @@ def update(self, flock):
     def calculate_alignment(self, flock):
         steer = pygame.math.Vector2(0, 0)
         count = 0
-        avg_velocity = pygame.math.Vector2(0, 0)  # Initialize avg_velocity
+        avg_velocity = pygame.math.Vector2(0, 0)
 
         for boid in flock:
             dist = self.position.distance_to(boid.position)
@@ -85,12 +85,10 @@ def update(self, flock):
 
         return steer
 
-
-
     def calculate_cohesion(self, flock):
-        steer = pygame.math.Vector2(0, 0)  # Initialize with default value
+        steer = pygame.math.Vector2(0, 0)
         count = 0
-        avg_position = pygame.math.Vector2(0, 0)  # Initialize avg_position
+        avg_position = pygame.math.Vector2(0, 0)
 
         for boid in flock:
             dist = self.position.distance_to(boid.position)
@@ -106,7 +104,6 @@ def update(self, flock):
             steer = steer.normalize()
 
         return steer
-
 
     def draw(self, screen):
         pygame.draw.circle(screen, BOID_COLOR, (int(self.position.x), int(self.position.y)), BOID_RADIUS)
