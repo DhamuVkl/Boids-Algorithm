@@ -1,10 +1,10 @@
 import pygame
 import random
-import math
+
 
 # Constants
-WIDTH, HEIGHT = 800, 600
-NUM_BOIDS = 50
+WIDTH, HEIGHT = 1000, 600
+NUM_BOIDS = 800
 MAX_SPEED = 3
 BOID_RADIUS = 5
 BOID_COLOR = (0, 255, 0)
