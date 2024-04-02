@@ -18,11 +18,16 @@ class Boid(pg.sprite.Sprite):
         self.image = pg.Surface((15, 15))
         self.image.set_colorkey(0)
         randColor = pg.Color(0)  # preps color so we can use hsva
-        randColor.hsva = (randint(0, 360), 85.0, 85.0) if cHSV is None else cHSV # Convert integers to floats
-        if isFish:  # (randint(120,300) + 180) % 360 noblues
+        if cHSV is None:
+            cHSV = (randint(0, 360), 85, 85, 100)  # Default values for hue, saturation, value, alpha
+        else:
+            cHSV += (100,)  # Adding default alpha value if not provided
+        randColor.hsva = cHSV
+        if isFish:
             pg.draw.polygon(self.image, randColor, ((7,0), (12,5), (3,14), (11,14), (2,5), (7,0)), width=3)
-            self.image = pg.transform.scale(self.image,(18,28))
-        else : pg.draw.polygon(self.image, randColor, ((7,0), (13,14), (7,11), (1,14), (7,0)))
+            self.image = pg.transform.scale(self.image, (18, 28))
+        else:
+            pg.draw.polygon(self.image, randColor, ((7,0), (13,14), (7,11), (1,14), (7,0)))
         self.pSpace = (self.image.get_width() + self.image.get_height()) / 2
         self.orig_image = pg.transform.rotate(self.image.copy(), -90)
         self.direction = pg.Vector2(1, 0)  # sets up forward direction
