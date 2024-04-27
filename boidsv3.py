@@ -3,7 +3,7 @@ from random import randint
 import pygame as pg
 
 FLLSCRN = False         # True for Fullscreen, or False for Window
-BOIDZ = 180              # How many boids to spawn, may slow after 200ish
+BOIDZ = 250              # How many boids to spawn, may slow after 200ish
 WRAP = False            # False avoids edges, True wraps boids to other side
 FISH = False            # True will turn boids into fish
 BGCOLOR = (0, 0, 0)     # Background color in RGB
