@@ -1,3 +1,21 @@
+"""
+A class representing a boid.
+
+Attributes:
+    position (numpy.ndarray): The position of the boid in 3D space.
+    velocity (numpy.ndarray): The velocity of the boid in 3D space.
+
+Methods:
+    __init__(): Initializes a boid with a random position and velocity within specified ranges.
+    generate_non_zero_velocity(): Generates a non-zero velocity vector for the boid.
+    update(boids, predator): Updates the boid's position and velocity based on separation, alignment, cohesion, and predator avoidance behaviors.
+    calculate_vectors(boids): Calculates the separation, alignment, and cohesion vectors for the boid based on the positions and velocities of other nearby boids.
+    avoid_predator(predator): Calculates the avoidance vector for the boid based on the position of a predator.
+    normalize(vector): Normalizes a vector to have a magnitude of 1.
+    calculate_distance(other_position): Calculates the distance between the boid and another position.
+    keep_within_bounds(): Keeps the boid within specified bounds.
+"""
+
 import numpy as np
 import random
 import math
@@ -13,9 +31,7 @@ WIDTH, HEIGHT = 800, 600
 NUM_BOIDS = 50
 BOID_SPEED = 5
 BOID_VISION_RADIUS = 100
-SEPARATION_FACTOR = (
-    0.5  # You might want to adjust this if boids move out of view too quickly
-)
+SEPARATION_FACTOR = 0.5
 ALIGNMENT_FACTOR = 0.1
 COHESION_FACTOR = 0.1
 PREDATOR_AVOIDANCE_FACTOR = 1.0
@@ -137,7 +153,7 @@ predator = Predator()
 
 
 def display():
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
     glLoadIdentity()
 
     # Adjusted camera position for better viewing
@@ -170,7 +186,7 @@ def update(value):
 
 def main():
     glutInit(sys.argv)
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+    glutInitDisplayMode(GLUT_DOUBLE or GLUT_RGB or GLUT_DEPTH)
     glutInitWindowSize(WIDTH, HEIGHT)
     glutCreateWindow(b"Boids Simulation")
     # OpenGL initialization
